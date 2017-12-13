@@ -1,0 +1,70 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "S3ProDDistribution": {
+      "Type": "AWS::CloudFront::Distribution",
+      "Properties": {
+        "DistributionConfig": {
+          "Origins": [
+            {
+              "DomainName": {
+                "Fn::Select": [
+                  "1",
+                  {
+                    "Fn::Split": [
+                      "//",
+                      {
+                        "Fn::ImportValue": "WebsiteURLS3EndPoint"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "Id": "S3-professional-designation-web-ui",
+              "CustomOriginConfig": {
+                "HTTPPort": "80",
+                "HTTPSPort": "443",
+                "OriginProtocolPolicy": "http-only"
+              }
+            }
+          ],
+          "Enabled": false,
+          "Comment": "",
+          "DefaultRootObject": "index.html",
+          "DefaultCacheBehavior": {
+            "TargetOriginId": "S3-professional-designation-web-ui",
+            "MinTTL": 0,
+            "MaxTTL": 31536000,
+            "DefaultTTL": 60,
+            "SmoothStreaming": "false",
+            "ViewerProtocolPolicy": "allow-all",
+            "ForwardedValues": {
+              "QueryString": "false",
+              "Cookies": {
+                "Forward": "none"
+              }
+            }
+          },
+          "PriceClass": "PriceClass_All",
+          "Restrictions": {
+            "GeoRestriction": {
+              "RestrictionType": "none"
+            }
+          },
+          "ViewerCertificate": {
+            "CloudFrontDefaultCertificate": "true"
+          }
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "DomainNameExpRoute53": {
+      "Value": {"Fn::GetAtt": ["S3ProDDistribution","DomainName"]},
+      "Description": "Domain name of the CloudFront",
+      "Export": {
+        "Name": "DomainNameExpRoute53"
+      }
+    }
+  }
+}

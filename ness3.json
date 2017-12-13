@@ -1,0 +1,478 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "applicationsDynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "aId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "desCode",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "stus",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "aId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "desCode",
+            "KeyType": "RANGE"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "2",
+          "WriteCapacityUnits": "2"
+        },
+        "TableName": {
+          "Fn::Join": [
+            "-",
+            [
+              "itg-fs",
+              {
+                "Ref": "ApplicationAcronym"
+              },
+              {
+                "Ref": "ResourcePrefix"
+              },
+              "applications"
+            ]
+          ]
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "Stus-Index",
+            "KeySchema": [
+              {
+                "AttributeName": "stus",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "NonKeyAttributes": [
+                "aId",
+                "desCode",
+                "name",
+                "crsInf",
+                "subDt",
+                "denRea",
+                "actDes"
+              ],
+              "ProjectionType": "INCLUDE"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": "2",
+              "WriteCapacityUnits": "2"
+            }
+          }
+        ]
+      }
+    },
+    "coursesDynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "cId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "prvNum",
+            "AttributeType": "N"
+          },
+          {
+            "AttributeName": "desCode",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "cId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "prvNum",
+            "KeyType": "RANGE"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "2",
+          "WriteCapacityUnits": "2"
+        },
+        "TableName": {
+          "Fn::Join": [
+            "-",
+            [
+              "itg-fs",
+              {
+                "Ref": "ApplicationAcronym"
+              },
+              {
+                "Ref": "ResourcePrefix"
+              },
+              "courses"
+            ]
+          ]
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "desCode-index",
+            "KeySchema": [
+              {
+                "AttributeName": "desCode",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "NonKeyAttributes": [
+                "cId",
+                "prvNum",
+                "active",
+                "crsNam",
+                "crsNum",
+                "required",
+                "effDate",
+                "insMode"
+              ],
+              "ProjectionType": "INCLUDE"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": "2",
+              "WriteCapacityUnits": "2"
+            }
+          }
+        ]
+      }
+    },
+    "enrollmentsDynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "eId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "desCode",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "stus",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "eId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "desCode",
+            "KeyType": "RANGE"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "2",
+          "WriteCapacityUnits": "2"
+        },
+        "TableName": {
+          "Fn::Join": [
+            "-",
+            [
+              "itg-fs",
+              {
+                "Ref": "ApplicationAcronym"
+              },
+              {
+                "Ref": "ResourcePrefix"
+              },
+              "enrollments"
+            ]
+          ]
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "stus-index",
+            "KeySchema": [
+              {
+                "AttributeName": "stus",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "NonKeyAttributes": [
+                "eId",
+                "desCode",
+                "dtSub",
+                "name",
+                "payMeth",
+                "feeInfo"
+              ],
+              "ProjectionType": "INCLUDE"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": "2",
+              "WriteCapacityUnits": "2"
+            }
+          }
+        ]
+      }
+    },
+    "profilesDynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "pId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "pId",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "2",
+          "WriteCapacityUnits": "2"
+        },
+        "TableName": {
+          "Fn::Join": [
+            "-",
+            [
+              "itg-fs",
+              {
+                "Ref": "ApplicationAcronym"
+              },
+              {
+                "Ref": "ResourcePrefix"
+              },
+              "profiles"
+            ]
+          ]
+        }
+      }
+    },
+    "renewalsDynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "rId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "stus",
+            "AttributeType": "S"
+          },
+
+          {
+            "AttributeName": "yrDesCode",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "rId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "yrDesCode",
+            "KeyType": "RANGE"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "2",
+          "WriteCapacityUnits": "2"
+        },
+        "TableName": {
+          "Fn::Join": [
+            "-",
+            [
+              "itg-fs",
+              {
+                "Ref": "ApplicationAcronym"
+              },
+              {
+                "Ref": "ResourcePrefix"
+              },
+              "renewals"
+            ]
+          ]
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "stus-index",
+            "KeySchema": [
+              {
+                "AttributeName": "stus",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "NonKeyAttributes": [
+                "rId",
+                "yrDesCode",
+                "name",
+                "origExDt",
+                "subDt",
+                "appDt",
+                "denRea"
+              ],
+              "ProjectionType": "INCLUDE"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": "2",
+              "WriteCapacityUnits": "2"
+            }
+          }
+        ]
+      }
+    },
+  "UserDataBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Fn::Join": [
+            "-",
+            [
+              "itg-fs",
+              {
+                "Ref": "ResourcePrefix"
+              },
+              {
+                "Ref": "ApplicationAcronym"
+              },
+              "user-data"
+            ]
+          ]
+        },
+        "CorsConfiguration" : {
+          "CorsRules" : [ {
+            "AllowedHeaders" : [ "*" ],
+            "AllowedMethods" : [ "GET", "PUT", "POST", "HEAD" ],
+            "AllowedOrigins" : [ "*" ],
+            "MaxAge" : "3000"
+          }]
+        }
+      }
+    },
+    "UserDataBucketPolicy": {
+      "Type" : "AWS::S3::BucketPolicy",
+      "Properties" : {
+        "Bucket" : { "Ref": "UserDataBucket" },
+        "PolicyDocument" : {
+          "Version":"2012-10-17",
+          "Statement":
+          [{
+            "Sid": "Make all content public",
+            "Effect":"Allow",
+            "Principal": "*",
+            "Action":["s3:GetObject"],
+            "Resource":{
+              "Fn::Join": [ "",
+                [ "arn:aws:s3:::",
+                  { "Ref": "UserDataBucket" },
+                  "/*"
+                ]
+              ]
+            }
+          }]
+        }
+      }
+    },
+    "UserDataBucketAdminPolicy": {
+      "Type" : "AWS::S3::BucketPolicy",
+      "Properties" : {
+        "Bucket" : { "Ref": "UserDataBucket" },
+        "PolicyDocument" : {
+          "Version":"2012-10-17",
+          "Statement":
+          [{
+            "Sid": "Make all content public",
+            "Effect":"Allow",
+            "Principal": "*",
+            "Action":["s3:GetObject"],
+            "Resource":{
+              "Fn::Join": [ "",
+                [ "arn:aws:s3:::",
+                  { "Ref": "UserDataBucket" },
+                  "/*"
+                ]
+              ]
+            }
+          }]
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "ResourcePrefix": {
+      "Type": "String",
+      "Description": "Resource prefix to use when creating necessary objects",
+      "AllowedPattern": "^[a-z0-9][a-z0-9-]+$",
+      "ConstraintDescription": "Resource prefix can only contain lower-case letters, numbers, and dashes",
+      "MaxLength": 30
+    },
+    "ApplicationAcronym": {
+      "Type": "String",
+      "Description": "Application identifier label to use when creating necessary objects (e.g. SRF for SERFF)",
+      "AllowedPattern": "^[a-z0-9][a-z0-9-]+$",
+      "ConstraintDescription": "Application acronym can only contain lower-case letters, numbers, and dashes",
+      "MaxLength": 8
+    }
+  },
+
+  "Outputs": {
+    "applicationsDynamoDBTable": {
+      "Description": "Table name of the newly created DynamoDB table",
+      "Value":  {"Fn::Join" : [ "", [ "arn:aws:dynamodb:",{"Ref" : "AWS::Region"},":",{"Ref" : "AWS::AccountId"},":", "table/",{"Ref" :"applicationsDynamoDBTable"}, "/*" ]]},
+      "Export" : {
+        "Name": "applicationsDynamoDBTable"
+
+      }
+    },
+
+    "coursesDynamoDBTable": {
+      "Value": {"Fn::Join" : [ "", [ "arn:aws:dynamodb:",{"Ref" : "AWS::Region"},":",{"Ref" : "AWS::AccountId"},":","table/",{"Ref" :"coursesDynamoDBTable"}, "/*" ]]},
+      "Description": "Table name of the newly created DynamoDB table",
+      "Export" : {
+        "Name": "coursesDynamoDBTable"
+      }
+    },
+
+    "profilesDynamoDBTable": {
+      "Value":  {"Fn::Join" : [ "", [ "arn:aws:dynamodb:",{"Ref" : "AWS::Region"},":",{"Ref" : "AWS::AccountId"},":","table/",{"Ref" :"profilesDynamoDBTable"}, "/*" ]]},
+      "Description": "Table name of the newly created DynamoDB table",
+      "Export" : {
+        "Name": "profilesDynamoDBTable"
+      }
+    },
+
+    "enrollmentsDynamoDBTable": {
+      "Value": {"Fn::Join" : [ "", [ "arn:aws:dynamodb:",{"Ref" : "AWS::Region"},":",{"Ref" : "AWS::AccountId"},":","table/",{"Ref" :"enrollmentsDynamoDBTable"}, "/*" ]]},
+      "Description": "Table name of the newly created DynamoDB table",
+      "Export" : {
+        "Name": "enrollmentsDynamoDBTable"
+      }
+
+    },
+
+    "renewalsDynamoDBTable": {
+      "Value": {"Fn::Join" : [ "", [ "arn:aws:dynamodb:",{"Ref" : "AWS::Region"},":",{"Ref" : "AWS::AccountId"},":","table/",{"Ref" :"renewalsDynamoDBTable"}, "/*" ]]},
+      "Description": "Table name of the newly created DynamoDB table",
+      "Export" : {
+        "Name": "renewalsDynamoDBTable"
+      }
+    }
+    }
+  }

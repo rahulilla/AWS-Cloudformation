@@ -1,0 +1,138 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Resources": {
+    "LambdaExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "itg-fs",
+              {
+                "Ref": "ApplicationAcronym"
+              },
+              "api",
+              "executionRole"
+            ]
+          ]
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/application/itg/fs/pd/",
+        "Policies": [
+          {
+            "PolicyName": "CloudWatchExecutionPolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          },
+          {
+            "PolicyName": "DynamoDBExecutionPolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem",
+                    "dynamodb:BatchGetItem",
+                    "dynamodb:Query",
+                    "dynamodb:PutItem",
+                    "dynamodb:Scan",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:BatchWriteItem"
+                  ],
+                  "Resource": [
+                    {"Fn::ImportValue" : "applicationsDynamoDBTable"},
+                    {"Fn::ImportValue" : "profilesDynamoDBTable"},
+                    {"Fn::ImportValue" : "coursesDynamoDBTable"},
+                    {"Fn::ImportValue" : "renewalsDynamoDBTable"},
+                    {"Fn::ImportValue" : "enrollmentsDynamoDBTable"}
+
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "b39c3719-0f5a-45cd-996a-54e2169a8292"
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "ResourcePrefix": {
+      "Type": "String",
+      "Description": "Resource prefix to use when creating necessary objects",
+      "AllowedPattern": "^[a-z0-9][a-z0-9-]+$",
+      "ConstraintDescription": "Resource prefix can only contain lower-case letters, numbers, and dashes",
+      "MaxLength": 30
+    },
+    "ApplicationAcronym": {
+      "Type": "String",
+      "Description": "Application identifier label to use when creating necessary objects (e.g. SRF for SERFF)",
+      "AllowedPattern": "^[a-z0-9][a-z0-9-]+$",
+      "ConstraintDescription": "Application acronym can only contain lower-case letters, numbers, and dashes",
+      "MaxLength": 8
+    }
+  },
+  "Outputs": {
+    "AwsAccountId": {
+      "Value": {
+        "Ref": "AWS::AccountId"
+      },
+      "Description": "Account ID of the AWS account"
+    },
+    "AwsRegion": {
+      "Value": {
+        "Ref": "AWS::Region"
+      },
+      "Description": "Region of the AWS deployment"
+    },
+    "LambdaExecutionRole": {
+      "Value": {
+        "Ref": "LambdaExecutionRole"
+      },
+      "Description": "Name of the Lambda execution role"
+    },
+    "LambdaExecutionRoleArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "LambdaExecutionRole",
+          "Arn"
+        ]
+      },
+      "Description": "ARN of the Lambda execution role"
+    }
+  }
+}

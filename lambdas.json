@@ -1,0 +1,155 @@
+
+{
+  "Resources": {
+    "professionalDesignationApiGetApplicationsForUser": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "org.naic.function.ApplicationFunctions::getApplicationsForUser",
+        "Role": "arn:aws:iam::572366721424:role/LambdaArticleBlueprint-devstack-GetArticleRole-CYZ8M81X7W35",
+        "Code": {
+          "S3Bucket": {
+            "Fn::ImportValue": "BucketName"
+          },
+          "S3Key": "ProfessionalDesignationLambda.zip"
+        },
+        "Runtime": "java8",
+        "Timeout": "15"
+      }
+    },
+    "professionalDesignationAuthorizer": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "org.naic.function.ApplicationFunctions::getApplicationsForUser",
+        "Role": "arn:aws:iam::572366721424:role/service-role/ProfessionalDesignationApi-LambdaExecutionRole",
+        "Code": {
+          "S3Bucket": {
+            "Fn::ImportValue": "BucketName"
+          },
+          "S3Key": "ProfessionalDesignationLambda.zip"
+        },
+        "Runtime": "java8",
+        "Timeout": "15"
+      }
+    },
+    "getApplicationsForComplexSearch": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "org.naic.function.ApplicationFunctions::getApplicationsForUser",
+        "Role": "arn:aws:iam::572366721424:role/LambdaArticleBlueprint-devstack-GetArticleRole-CYZ8M81X7W35",
+        "Code": {
+          "S3Bucket": {
+            "Fn::ImportValue": "BucketName"
+          },
+          "S3Key": "ProfessionalDesignationLambda.zip"
+        },
+        "Runtime": "java8",
+        "Timeout": "15"
+      }
+    },
+    "professionalDesignationAppFindApplicationsForStatus": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "org.naic.function.ApplicationFunctions::getApplicationsForUser",
+        "Role": "arn:aws:iam::572366721424:role/LambdaArticleBlueprint-devstack-GetArticleRole-CYZ8M81X7W35",
+        "Code": {
+          "S3Bucket": {
+            "Fn::ImportValue": "BucketName"
+          },
+          "S3Key": "ProfessionalDesignationLambda.zip"
+        },
+        "Runtime": "java8",
+        "Timeout": "15"
+      }
+    },
+    "professionalDesignationApiSaveOrUpdateApplication": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "org.naic.function.ApplicationFunctions::getApplicationsForUser",
+        "Role": "arn:aws:iam::572366721424:role/LambdaArticleBlueprint-devstack-PutArticleRole-8L8ZQULWG42T",
+        "Code": {
+          "S3Bucket": {
+            "Fn::ImportValue": "BucketName"
+          },
+          "S3Key": "ProfessionalDesignationLambda.zip"
+        },
+        "Runtime": "java8",
+        "Timeout": "15"
+      }
+    },
+    "professionalDesignationApiGetApplicationByKey": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "org.naic.function.ApplicationFunctions::getApplicationsForUser",
+        "Role": "arn:aws:iam::572366721424:role/LambdaArticleBlueprint-devstack-GetArticleRole-CYZ8M81X7W35",
+        "Code": {
+          "S3Bucket": {
+            "Fn::ImportValue": "BucketName"
+          },
+          "S3Key": "ProfessionalDesignationLambda.zip"
+        },
+        "Runtime": "java8",
+        "Timeout": "15"
+      }
+    },
+    "professionalDesignationApiGetTranscriptForUser": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "org.naic.function.ApplicationFunctions::getApplicationsForUser",
+        "Role": "arn:aws:iam::572366721424:role/LambdaArticleBlueprint-devstack-GetArticleRole-CYZ8M81X7W35",
+        "Code": {
+          "S3Bucket": {
+            "Fn::ImportValue": "BucketName"
+          },
+          "S3Key": "ProfessionalDesignationLambda.zip"
+        },
+        "Runtime": "java8",
+        "Timeout": "15"
+      }
+    },
+    "professionalDesignationGetFeesForComplexSearch": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "org.naic.function.ApplicationFunctions::getApplicationsForUser",
+        "Role": "arn:aws:iam::572366721424:role/LambdaArticleBlueprint-devstack-GetArticleRole-CYZ8M81X7W35",
+        "Code": {
+          "S3Bucket": {
+            "Fn::ImportValue": "BucketName"
+          },
+          "S3Key": "ProfessionalDesignationLambda.zip"
+        },
+        "Runtime": "java8",
+        "Timeout": "15"
+      }
+    },
+    "getEnrollmentsForComplexSearch": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "org.naic.function.ApplicationFunctions::getApplicationsForUser",
+        "Role": "arn:aws:iam::572366721424:role/LambdaArticleBlueprint-devstack-GetArticleRole-CYZ8M81X7W35",
+        "Code": {
+          "S3Bucket": {
+            "Fn::ImportValue": "BucketName"
+          },
+          "S3Key": "ProfessionalDesignationLambda.zip"
+        },
+        "Runtime": "java8",
+        "Timeout": "15"
+      }
+    },
+    "authCallback": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "org.naic.function.ApplicationFunctions::getApplicationsForUser",
+        "Role": "arn:aws:iam::572366721424:role/lambda_extmail_test",
+        "Code": {
+          "S3Bucket": {
+            "Fn::ImportValue": "BucketName"
+          },
+          "S3Key": "ProfessionalDesignationLambda.zip"
+        },
+        "Runtime": "java8",
+        "Timeout": "15"
+      }
+    }
+  }
+}

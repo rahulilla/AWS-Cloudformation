@@ -1,0 +1,118 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "UserDataBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Fn::Join": [
+            "-",
+            [
+              "itg-fs",
+              {
+                "Ref": "ResourcePrefix"
+              },
+              {
+                "Ref": "ApplicationAcronym"
+              },
+              "user-data"
+            ]
+          ]
+        },
+        "CorsConfiguration" : {
+          "CorsRules" : [ {
+            "AllowedHeaders" : [ "*" ],
+            "AllowedMethods" : [ "GET", "PUT", "POST", "HEAD" ],
+            "AllowedOrigins" : [ "*" ],
+            "MaxAge" : "3000"
+          }]
+        }
+      }
+    },
+    "UserDataBucketPolicy": {
+      "Type" : "AWS::S3::BucketPolicy",
+      "Properties" : {
+        "Bucket" : { "Ref": "UserDataBucket" },
+        "PolicyDocument" : {
+          "Version":"2012-10-17",
+          "Statement":
+          [{
+            "Sid": "Make all content public",
+            "Effect":"Allow",
+            "Principal": "*",
+            "Action":["s3:GetObject"],
+            "Resource":{
+              "Fn::Join": [ "",
+                [ "arn:aws:s3:::",
+                  { "Ref": "UserDataBucket" },
+                  "/*"
+                ]
+              ]
+            }
+          }]
+        }
+      }
+    },
+    "UserDataBucketAdminPolicy": {
+      "Type" : "AWS::S3::BucketPolicy",
+      "Properties" : {
+        "Bucket" : { "Ref": "UserDataBucket" },
+        "PolicyDocument" : {
+          "Version":"2012-10-17",
+          "Statement":
+          [{
+            "Sid": "Make all content public",
+            "Effect":"Allow",
+            "Principal": "*",
+            "Action":["s3:GetObject"],
+            "Resource":{
+              "Fn::Join": [ "",
+                [ "arn:aws:s3:::",
+                  { "Ref": "UserDataBucket" },
+                  "/*"
+                ]
+              ]
+            }
+          }]
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "ResourcePrefix": {
+      "Type": "String",
+      "Description": "Resource prefix to use when creating necessary objects",
+      "AllowedPattern": "^[a-z0-9][a-z0-9-]+$",
+      "ConstraintDescription": "Resource prefix can only contain lower-case letters, numbers, and dashes",
+      "MaxLength": 30
+    },
+    "ApplicationAcronym": {
+      "Type": "String",
+      "Description": "Application identifier label to use when creating necessary objects (e.g. SRF for SERFF)",
+      "AllowedPattern": "^[a-z0-9][a-z0-9-]+$",
+      "ConstraintDescription": "Application acronym can only contain lower-case letters, numbers, and dashes",
+      "MaxLength": 8
+    }
+  },
+
+  "Outputs": {
+    "AwsAccountId": {
+      "Value": {
+        "Ref": "AWS::AccountId"
+      },
+      "Description": "Account ID of the AWS account"
+    },
+    "AwsRegion": {
+      "Value": {
+        "Ref": "AWS::Region"
+      },
+      "Description": "Region of the AWS deployment"
+    },
+    "UserDataBucket": {
+      "Value": {
+        "Ref": "UserDataBucket"
+      },
+      "Description": "Name of the S3 bucket used to store user-specific application data"
+    }
+  }
+}

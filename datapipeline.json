@@ -1,0 +1,278 @@
+{
+  "objects": [
+    {
+      "output": {
+        "ref": "S3DataNodeId_vme8x"
+      },
+      "input": {
+        "ref": "DynamoDBDataNodeId_H3Buw"
+      },
+      "name": "TableBackupActivity2",
+      "step": "s3://dynamodb-emr-#{myDDBRegion2}/emr-ddb-storage-handler/2.1.0/emr-ddb-2.1.0.jar,org.apache.hadoop.dynamodb.tools.DynamoDbExport,#{output.directoryPath},#{input.tableName},#{input.readThroughputPercent}",
+      "runsOn": {
+        "ref": "EmrClusterForBackup"
+      },
+      "id": "EmrActivityId_FYCnl",
+      "type": "EmrActivity"
+    },
+    {
+      "readThroughputPercent": "#{myDDBReadThroughputRatio}",
+      "name": "DDBSourceTable4",
+      "id": "DynamoDBDataNodeId_JMU7d",
+      "type": "DynamoDBDataNode",
+      "tableName": "#{myDDBTableName4}"
+    },
+    {
+      "readThroughputPercent": "#{myDDBReadThroughputRatio}",
+      "name": "DDBSourceTable1",
+      "id": "DDBSourceTable",
+      "type": "DynamoDBDataNode",
+      "tableName": "#{myDDBTableName1}"
+    },
+    {
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "directoryPath": "#{myOutputS3Loc4}/#",
+      "name": "S3BackupLocation4",
+      "id": "S3DataNodeId_AiA4a",
+      "type": "S3DataNode"
+    },
+    {
+      "output": {
+        "ref": "S3BackupLocation"
+      },
+      "input": {
+        "ref": "DDBSourceTable"
+      },
+      "maximumRetries": "2",
+      "name": "TableBackupActivity1",
+      "step": "s3://dynamodb-emr-#{myDDBRegion1}/emr-ddb-storage-handler/2.1.0/emr-ddb-2.1.0.jar,org.apache.hadoop.dynamodb.tools.DynamoDbExport,#{output.directoryPath}/profiles,#{input.tableName},#{input.readThroughputPercent}",
+      "id": "TableBackupActivity",
+      "runsOn": {
+        "ref": "EmrClusterForBackup"
+      },
+      "type": "EmrActivity",
+      "resizeClusterBeforeRunning": "true"
+    },
+    {
+      "period": "1 days",
+      "startDateTime": "2017-08-30T00:00:00",
+      "name": "Every 1 day",
+      "id": "DefaultSchedule",
+      "type": "Schedule"
+    },
+    {
+      "readThroughputPercent": "#{myDDBReadThroughputRatio}",
+      "name": "DDBSourceTable2",
+      "id": "DynamoDBDataNodeId_H3Buw",
+      "type": "DynamoDBDataNode",
+      "tableName": "#{myDDBTableName2}"
+    },
+    {
+      "bootstrapAction": "s3://#{myDDBRegion1}.elasticmapreduce/bootstrap-actions/configure-hadoop, --yarn-key-value,yarn.nodemanager.resource.memory-mb=11520,--yarn-key-value,yarn.scheduler.maximum-allocation-mb=11520,--yarn-key-value,yarn.scheduler.minimum-allocation-mb=1440,--yarn-key-value,yarn.app.mapreduce.am.resource.mb=2880,--mapred-key-value,mapreduce.map.memory.mb=5760,--mapred-key-value,mapreduce.map.java.opts=-Xmx4608M,--mapred-key-value,mapreduce.reduce.memory.mb=2880,--mapred-key-value,mapreduce.reduce.java.opts=-Xmx2304m,--mapred-key-value,mapreduce.map.speculative=false",
+      "name": "EmrClusterForBackup",
+      "coreInstanceCount": "1",
+      "coreInstanceType": "m3.xlarge",
+     "amiVersion": "3.9.0",
+      "masterInstanceType": "m3.xlarge",
+      "id": "EmrClusterForBackup",
+      "region": "#{myDDBRegion}",
+      "type": "EmrCluster",
+      "terminateAfter": "2 Hours"
+    },
+    {
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "directoryPath": "#{myOutputS3Loc2}/#",
+      "name": "S3BackupLocation2",
+      "id": "S3DataNodeId_vme8x",
+      "type": "S3DataNode"
+    },
+    {
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "directoryPath": "#{myOutputS3Loc5}/#",
+      "name": "S3BackupLocation5",
+      "id": "S3DataNodeId_qWlne",
+      "type": "S3DataNode"
+    },
+    {
+      "output": {
+        "ref": "S3DataNodeId_qWlne"
+      },
+      "input": {
+        "ref": "DynamoDBDataNodeId_pKYI2"
+      },
+      "name": "TableBackupActivity5",
+      "step": "s3://dynamodb-emr-#{myDDBRegion5}/emr-ddb-storage-handler/2.1.0/emr-ddb-2.1.0.jar,org.apache.hadoop.dynamodb.tools.DynamoDbExport,#{output.directoryPath},#{input.tableName},#{input.readThroughputPercent}",
+      "id": "EmrActivityId_b40y2",
+      "runsOn": {
+        "ref": "EmrClusterForBackup"
+      },
+      "type": "EmrActivity"
+    },
+    {
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "directoryPath": "#{myOutputS3Loc3}/#",
+      "name": "S3BackupLocation3",
+      "id": "S3DataNodeId_XmtWm",
+      "type": "S3DataNode"
+    },
+    {
+      "directoryPath": "#{myOutputS3Loc1}/#{format(@scheduledStartTime, 'YYYY-MM-dd-HH-mm-ss')}",
+      "name": "S3BackupLocation1",
+      "id": "S3BackupLocation",
+      "type": "S3DataNode"
+    },
+    {
+      "readThroughputPercent": "#{myDDBReadThroughputRatio}",
+      "name": "DDBSourceTable5",
+      "id": "DynamoDBDataNodeId_pKYI2",
+      "type": "DynamoDBDataNode",
+      "tableName": "#{myDDBTableName5}"
+    },
+    {
+      "output": {
+        "ref": "S3DataNodeId_XmtWm"
+      },
+      "input": {
+        "ref": "DynamoDBDataNodeId_eIJYs"
+      },
+      "name": "TableBackupActivity3",
+      "step": "s3://dynamodb-emr-#{myDDBRegion3}/emr-ddb-storage-handler/2.1.0/emr-ddb-2.1.0.jar,org.apache.hadoop.dynamodb.tools.DynamoDbExport,#{output.directoryPath},#{input.tableName},#{input.readThroughputPercent}",
+      "id": "EmrActivityId_F6SLL",
+      "runsOn": {
+        "ref": "EmrClusterForBackup"
+      },
+      "type": "EmrActivity"
+    },
+    {
+      "readThroughputPercent": "#{myDDBReadThroughputRatio}",
+      "name": "DDBSourceTable3",
+      "id": "DynamoDBDataNodeId_eIJYs",
+      "type": "DynamoDBDataNode",
+      "tableName": "#{myDDBTableName3}"
+    },
+    {
+      "output": {
+        "ref": "S3DataNodeId_AiA4a"
+      },
+      "input": {
+        "ref": "DynamoDBDataNodeId_JMU7d"
+      },
+      "name": "TableBackupActivity4",
+      "step": "s3://dynamodb-emr-#{myDDBRegion4}/emr-ddb-storage-handler/2.1.0/emr-ddb-2.1.0.jar,org.apache.hadoop.dynamodb.tools.DynamoDbExport,#{output.directoryPath},#{input.tableName},#{input.readThroughputPercent}",
+      "runsOn": {
+        "ref": "EmrClusterForBackup"
+      },
+      "id": "EmrActivityId_25jWR",
+      "type": "EmrActivity"
+    },
+    {
+      "failureAndRerunMode": "CASCADE",
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "resourceRole": "DataPipelineDefaultResourceRole",
+      "role": "DataPipelineDefaultRole",
+      "pipelineLogUri": "s3://dynamo-professional-designation-log/",
+      "scheduleType": "cron",
+      "name": "Default",
+      "id": "Default"
+    }
+  ],
+  "parameters": [
+    {
+      "default": "us-east-1",
+      "watermark": "us-east-1",
+      "description": "Region of the DynamoDB table courses4",
+      "id": "myDDBRegion4",
+      "type": "String"
+    },
+    {
+      "description": "Source DynamoDB table name applications",
+      "id": "myDDBTableName5",
+      "type": "String"
+    },
+    {
+      "default": "us-east-1",
+      "watermark": "us-east-1",
+      "description": "Region of the DynamoDB table renewals2",
+      "id": "myDDBRegion2",
+      "type": "String"
+    },
+    {
+      "default": "us-east-1",
+      "watermark": "us-east-1",
+      "description": "Region of the DynamoDB table profiles1",
+      "id": "myDDBRegion1",
+      "type": "String"
+    },
+    {
+      "description": "Source DynamoDB table name renewals",
+      "id": "myDDBTableName2",
+      "type": "String"
+    },
+    {
+      "description": "Source DynamoDB table name enrollments",
+      "id": "myDDBTableName3",
+      "type": "String"
+    },
+    {
+      "default": "0.25",
+      "watermark": "Enter value between 0.1-1.0",
+      "description": "DynamoDB read throughput ratio",
+      "id": "myDDBReadThroughputRatio",
+      "type": "Double"
+    },
+    {
+      "default": "us-east-1",
+      "watermark": "us-east-1",
+      "description": "Region of the DynamoDB table applications5",
+      "id": "myDDBRegion5",
+      "type": "String"
+    },
+    {
+      "description": "Source DynamoDB table name courses",
+      "id": "myDDBTableName4",
+      "type": "String"
+    },
+    {
+      "description": "Source DynamoDB table name profiles",
+      "id": "myDDBTableName1",
+      "type": "String"
+    },
+    {
+      "default": "us-east-1",
+      "watermark": "us-east-1",
+      "description": "Region of the DynamoDB table enrollments3",
+      "id": "myDDBRegion3",
+      "type": "String"
+    }
+  ],
+  "values": {
+    "myOutputS3Loc2": "s3://bucket-prefixdaily-backup/renewals/",
+    "myOutputS3Loc1": "s3://bucket-prefixdaily-backup/profiles/",
+    "myDDBRegion4": "us-east-1",
+    "myDDBRegion5": "us-east-1",
+    "myDDBRegion2": "us-east-1",
+    "myDDBRegion3": "us-east-1",
+    "myDDBRegion1": "us-east-1",
+    "myDDBTableName2": "table-prefixrenewals",
+    "myDDBTableName1": "table-prefixprofiles",
+    "myDDBTableName4": "table-prefixcourses",
+    "myDDBTableName3": "table-prefixenrollments",
+    "myDDBTableName5": "table-prefixapplications",
+    "myDDBRegion": "us-east-1",
+    "myDDBReadThroughputRatio": "0.25",
+    "myOutputS3Loc4": "s3://bucket-prefixdaily-backup/courses/",
+    "myOutputS3Loc3": "s3://bucket-prefixdaily-backup/enrollments/",
+    "myOutputS3Loc5": "s3://bucket-prefixdaily-backup/applications/"
+  }
+}
+
